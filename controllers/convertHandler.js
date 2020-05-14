@@ -7,16 +7,15 @@
 */
 
 function ConvertHandler() {
-  const regEx = /(^\d*[.]?\d*[\/]?\d*[.]?\d*)([a-zA-z]+$)/;
+  const regExNum = /(^\d*[.]?\d*(\d+\/.?[1-9]+)?[.]?\d*$)/;
+  const regExUnit = /[a-zA-Z]+$/;
   
   this.getNum = function(input) {
     if(!input) return "invalid input";
-    if(!regEx.test(input)) return "invalid input";
+    const num = input.replace(regExUnit, "");
+    if(!regExNum.test(num)) return "invalid number";
     
-    const resultArray = regEx.match(input);
-    const num = resultArray[0]
-    
-    if(num === null) return 1;
+    if(num === "") return 1;
     
     if(!/\//.test(num)) return parseFloat(num);
     
@@ -26,9 +25,11 @@ function ConvertHandler() {
   };
   
   this.getUnit = function(input) {
+    if(!input) return "invalid input";
     const acceptedUnits = ['gal', 'lbs', 'mi', 'km', 'kg', 'l'];
-    const inputArray = regEx.match(input);
-    const unit = inputArray[1].toLowerCase();
+    const inputArray = regExUnit.match(input);
+    if (inputArray === null) return "no unit";
+    const unit = inputArray[0].toLowerCase();
     if (acceptedUnits.indexOf(unit) === -1) {
       return 'invalid unit';
     } else {return unit;}
@@ -78,10 +79,10 @@ function ConvertHandler() {
   };
   
   this.getString = function(initNum, initUnit, returnNum, returnUnit) {
-    let startUnit = initUnit;
-    let endUnit = returnUnit;
-    if (initNum === 1) startUnit = initUnit.replace("s", "");
-    if (returnNum === 1) endUnit = returnUnit.replace("s", "");
+    let startUnit = this.spelledOutUnit(initUnit);
+    let endUnit = this.spelledOutUnit(returnUnit);
+    if (initNum === 1) startUnit = startUnit.replace("s", "");
+    if (returnNum === 1) endUnit = endUnit.replace("s", "");
     
     const string = `${initNum} ${startUnit} converts to ${returnNum} ${endUnit}`
     
