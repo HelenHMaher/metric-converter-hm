@@ -3,7 +3,7 @@ function ConvertHandler() {
   this.getNum = function(input) {
     const regExNum = /(^\d*[.]?\d*(\d+\/.?[1-9]+)?[.]?\d*$)/;
     const regExUnit = /[a-zA-Z]+$/;
-    if(!input) return "invalid input";
+    if(!input) return "invalid number";
     const num = input.replace(regExUnit, "");
     if(!regExNum.test(num)) return "invalid number";
     
@@ -18,17 +18,16 @@ function ConvertHandler() {
   
   this.getUnit = function(input) {
     const regExUnit = /[a-zA-Z]+$/;
-    if(!input) return "invalid input";
+    if(!input) return "invalid unit";
     const acceptedUnits = ['gal','l','mi','km','lbs','kg','GAL','L','MI','KM','LBS','KG'];
     const unit = input.match(regExUnit);
-    if (unit === null) return "no unit";
+    if (unit === null) return "invalid unit";
     if (acceptedUnits.indexOf(unit[0]) === -1) {
-      return 'invalid unit';
-    } else {return unit[0];}
+      return "invalid unit";
+    } else {return unit[0].toLowerCase();}
   };
   
   this.getReturnUnit = function(initUnit) {
-    const unit = initUnit.toLowerCase();
     const conversionObj = {
       gal: "l",
       l: "gal",
@@ -38,11 +37,10 @@ function ConvertHandler() {
       km: "mi"
     }
     
-    return conversionObj[unit];
+    return conversionObj[initUnit];
   };
 
   this.spellOutUnit = function(unit) {
-    const lowerUnit = unit.toLowerCase();
     const spellOutObj = {
       gal: "gallons",
       l: "liters",
@@ -52,7 +50,7 @@ function ConvertHandler() {
       km: "kilometers"
     }
     
-    return spellOutObj[lowerUnit];
+    return spellOutObj[unit];
   };
   
   this.convert = function(initNum, initUnit) {
@@ -69,12 +67,12 @@ function ConvertHandler() {
       km: initNum/miToKm
     };
     
-    return +conversionObj[initUnit].toFixed(5);
+    return Number(conversionObj[initUnit].toFixed(5));
   };
   
   this.getString = function(initNum, initUnit, returnNum, returnUnit) {
-    let startUnit = this.spelledOutUnit(initUnit);
-    let endUnit = this.spelledOutUnit(returnUnit);
+    let startUnit = this.spellOutUnit(initUnit);
+    let endUnit = this.spellOutUnit(returnUnit);
     if (initNum === 1) startUnit = startUnit.replace("s", "");
     if (returnNum === 1) endUnit = endUnit.replace("s", "");
     

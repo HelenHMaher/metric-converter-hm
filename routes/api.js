@@ -17,35 +17,35 @@ module.exports = function (app) {
 
   app.route('/api/convert')
     .get(function (req, res, next){
-      var input = req.query.input;
-      var initNum = convertHandler.getNum(input);
-      var initUnit = convertHandler.getUnit(input);
+      const input = req.query.input;
     
-      let invalidNum = isNaN(initNum);
-      if (initUnit.match(/invalid/) && invalidNum) {
+      const initNum = convertHandler.getNum(input);
+      const initUnit = convertHandler.getUnit(input);
+    
+      const invalidNum = isNaN(initNum);
+    
+      if (initUnit === "invalid unit") {
+        if (invalidNum) {
         const err = new Error("invalid number and unit");
         err.status = 400;
         next(err);
-      } else if (initUnit.match(/invalid/)) {
+        } else {
         const err = new Error("invalid unit");
         err.status = 400;
         next(err);
+        } 
       } else if (invalidNum) {
         const err = new Error("invalid number");
         err.status = 400;
         next(err);
-      } else if (initUnit.match(/no/)) {
-        const err = new Error("no unit");
-        err.status = 400;
-        next(err);
-      }
-
-    
-      var returnNum = convertHandler.convert(initNum, initUnit);
-      var returnUnit = convertHandler.getReturnUnit(initUnit);
-      var toString = convertHandler.getString(initNum, initUnit, returnNum, returnUnit);
+      } else if (!invalidNum && initUnit !== "invalid unit"){
       
-      return res.json({initNum, initUnit, returnNum, returnUnit, string:toString})
-    });
+      const returnNum = convertHandler.convert(initNum, initUnit);
+      const returnUnit = convertHandler.getReturnUnit(initUnit);
+      const toString = convertHandler.getString(initNum, initUnit, returnNum, returnUnit);
+      
+      res.status(200).json({initNum, initUnit, returnNum, returnUnit, string:toString})
+    }
+  });
     
 };
