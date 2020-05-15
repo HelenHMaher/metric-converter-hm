@@ -17,10 +17,9 @@ module.exports = function (app) {
 
   app.route('/api/convert')
     .get(function (req, res, next){
-    
-      const input = req.query.input;
-      const initNum = convertHandler.getNum(input);
-      const initUnit = convertHandler.getUnit(input);
+      var input = req.query.input;
+      var initNum = convertHandler.getNum(input);
+      var initUnit = convertHandler.getUnit(input);
     
       let invalidNum = isNaN(initNum);
       if (initUnit.match(/invalid/) && invalidNum) {
@@ -40,7 +39,7 @@ module.exports = function (app) {
         err.status = 400;
         next(err);
       }
-    
+
     
       var returnNum = convertHandler.convert(initNum, initUnit);
       var returnUnit = convertHandler.getReturnUnit(initUnit);
@@ -48,5 +47,5 @@ module.exports = function (app) {
       
       return res.json({initNum, initUnit, returnNum, returnUnit, string:toString})
     });
-  
+    
 };
