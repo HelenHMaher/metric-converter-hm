@@ -1,0 +1,65 @@
+.frontEnd {
+  background: rgba(176, 224, 230, 1);
+  height: 300px;
+  font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+  text-align: center;
+  border-radius: 5px;
+  box-shadow: 0 0 5px;
+  width: 700px;
+  margin: auto;
+}
+.header {
+  
+}
+.border {
+  margin-bottom: 30px;
+}
+
+#convertField {
+  height: 20px;
+  border-radius: 10px;
+  border: 2px solid grey;
+}
+
+#convert {
+  height: 25px;
+  border-radius: 10px;
+  border: 2px solid grey;
+  font-size: 15px;
+}
+
+#convert:hover {
+  background: rgb(231,245,247);
+}
+
+#result {
+  background: rgb(231,245,247);
+  height: 50px;
+  width: 500px;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+}
+
+.result {
+  width: 700px;
+  height: 100px;
+  margin: auto;
+}
+
+.footer {
+  position: absolute;
+  width: 700px;
+  top: 280px;
+  font-size: 12px;
+}
+
+a {
+  text-decoration: none;
+  color: black;
+}
+a:hover {
+  color: white;
+}
